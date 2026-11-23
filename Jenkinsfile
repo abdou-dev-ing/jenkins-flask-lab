@@ -19,14 +19,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Docker image'
-                sh 'docker run --rm -w /app -e PYTHONPATH=/app ${IMAGE_NAME}:${BUILD_NUMBER} pytest -v'
+                sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Running application tests'
-                sh 'docker run --rm ${IMAGE_NAME}:${BUILD_NUMBER} pytest -v'
+                sh 'docker run --rm -w /app -e PYTHONPATH=/app ${IMAGE_NAME}:${BUILD_NUMBER} pytest -v'
             }
         }
 
