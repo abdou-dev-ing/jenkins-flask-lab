@@ -1,4 +1,3 @@
-```groovy
 pipeline {
     agent any
 
@@ -12,28 +11,28 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Getting source code from GitHub.'
+                echo 'Getting source code from GitHub'
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building Docker image.'
+                echo 'Building Docker image'
                 sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running application tests.'
+                echo 'Running application tests'
                 sh 'docker run --rm ${IMAGE_NAME}:${BUILD_NUMBER} pytest -v'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying Flask application.'
+                echo 'Deploying Flask application'
 
                 sh '''
                     docker rm -f ${CONTAINER_NAME} || true
@@ -49,13 +48,14 @@ pipeline {
 
         stage('Verify') {
             steps {
-                echo 'Verifying application availability.'
+                echo 'Verifying Flask application'
 
                 sh '''
                     curl --fail --retry 10 --retry-delay 2 \
-                    http://localhost:${APP_PORT}/health
+                        http://localhost:${APP_PORT}/health
 
-                    curl --fail http://localhost:${APP_PORT}/
+                    curl --fail \
+                        http://localhost:${APP_PORT}/
                 '''
             }
         }
@@ -71,4 +71,3 @@ pipeline {
         }
     }
 }
-```
