@@ -19,7 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Docker image'
-                sh 'docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .'
+                sh 'docker run --rm -w /app -e PYTHONPATH=/app ${IMAGE_NAME}:${BUILD_NUMBER} pytest -v'
             }
         }
 
